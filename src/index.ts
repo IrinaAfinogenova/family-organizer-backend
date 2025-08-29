@@ -7,7 +7,6 @@ const PORT = 5000;
 
 app.use(cors({
   origin: "http://localhost:5173", // TODO update to real place
-  credentials: true
 }));
 app.use(express.json());
 
