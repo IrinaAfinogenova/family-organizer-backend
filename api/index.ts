@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import path from 'path';
 import cors from "cors";
 import authRoutes from "../routes/auth";
 
@@ -23,7 +22,6 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Family Organizer Server is running!");
 });
 
-// Local dev listener (ignored on Vercel)
 if (process.env.NODE_ENV !== 'production') {
   const PORT = 3000;
   app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
