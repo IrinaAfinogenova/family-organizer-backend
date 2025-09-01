@@ -4,8 +4,8 @@
 	"description": "",
 	"scripts": {
     "build": "prisma generate && tsc",
-    "dev": "ts-node-dev --respawn api/index.ts",
-    "start": "node api/index.ts"
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "start": "node src/index.ts"
 	},
 	"keywords": [],
 	"author": "",
