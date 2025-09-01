@@ -5,7 +5,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: process.env.NODE_ENV === "production" ? ["https://family-organizer-frontend.vercel.app"] : true,
+    origin: process.env.NODE_ENV === "production" ? ["https://family-organizer-six.vercel.app"] : true,
     credentials: true,
   })
 );
