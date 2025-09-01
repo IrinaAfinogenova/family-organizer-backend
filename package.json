@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.ts",
 	"scripts": {
-		"build": "prisma generate && tsc && vite build",
+		"build": "prisma generate && tsc",
 		"start": "nodemon  api/index.ts"
 	},
 	"keywords": [],
