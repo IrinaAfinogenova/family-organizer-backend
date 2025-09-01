@@ -5,7 +5,7 @@
 	"scripts": {
     "build": "prisma generate && tsc",
     "dev": "ts-node-dev --respawn api/index.ts",
-    "start": "node api/index.js"
+    "start": "node api/index.ts"
 	},
 	"keywords": [],
 	"author": "",
