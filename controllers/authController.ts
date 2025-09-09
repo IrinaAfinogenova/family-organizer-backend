@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import prisma from "../prismaClient";
+import { AuthRequest } from "../types";
 
 // TODO add validation for email, password and t d
 export const registerUser = async (req: Request, res: Response) => {
@@ -56,11 +57,45 @@ export const loginUser = async (req: Request, res: Response) => {
       { expiresIn: "1h" }
     );
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 1000, // 1 hour
+    });
+
     const { password: _, ...userWithoutPassword } = user;
 
-    res.json({ user: userWithoutPassword, token });
+    res.json({ user: userWithoutPassword });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+export const getUser = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = (req as any).userId;
+
+    if (!userId) {
+      return res.status(401).json({ message: "No userId found in token. Please provide a valid authentication token" });
+    }
+
+    const user = await prisma.users.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        created_at: true
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found. Please check the provided user details." });
+    }
+
+    res.json(user);
+  } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
