@@ -1,6 +1,8 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import authRoutes from "../routes/auth";
+import transactionsRouter from "../routes/transactions";
+
 const app = express();
 
 app.use(
@@ -13,6 +15,7 @@ app.use(
 app.use(express.json());
 
 app.use("/auth", authRoutes);
+app.use("/transactions", transactionsRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Family Organizer Server is running!");
