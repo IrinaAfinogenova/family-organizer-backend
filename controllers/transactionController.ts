@@ -4,7 +4,7 @@ import { AuthRequest } from "../types";
 
 export const createTransaction = async (req: AuthRequest, res: Response) => {
   try {
-    const { type, amount, note, repeat } = req.body;
+    const { type, amount, note, repeat, date } = req.body;
 
     if (!type || !amount) {
       return res.status(400).json({ message: "Type and amount are required" });
@@ -20,6 +20,7 @@ export const createTransaction = async (req: AuthRequest, res: Response) => {
         amount,
         note,
         repeat: repeat || "once",
+        date
       },
     });
 
