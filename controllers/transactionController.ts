@@ -30,3 +30,27 @@ export const createTransaction = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
+export const getTransactions = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.userId;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const transactions = await prisma.transactions.findMany({
+      where: { user_id: userId },
+      orderBy: { date: "desc" },
+    });
+  
+    const normalized = transactions.map(t => ({
+      ...t,
+      amount: Number(t.amount),
+    }));
+    res.json(normalized);
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
