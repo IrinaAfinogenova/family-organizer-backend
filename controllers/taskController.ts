@@ -2,7 +2,7 @@ import { Response } from "express";
 import prisma from "../prismaClient";
 import { AuthRequest } from "../types";
 
-export const createToDo = async (req: AuthRequest, res: Response) => {
+export const createTask = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.userId;
     if (!userId) {
@@ -15,7 +15,7 @@ export const createToDo = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ message: "Title is required" });
     }
 
-    const todo = await prisma.todos.create({
+    const task = await prisma.tasks.create({
       data: {
         user_id: userId,
         title,
@@ -24,9 +24,9 @@ export const createToDo = async (req: AuthRequest, res: Response) => {
       },
     });
 
-    res.status(201).json(todo);
+    res.status(201).json(task);
   } catch (error) {
-    console.error("Error creating todo:", error);
+    console.error("Error creating task:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
