@@ -59,6 +59,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
     res.cookie("token", token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "none", // TODO!!!!! fix when it will be one domain for BE and FE
       maxAge: 60 * 60 * 1000, // 1 hour
     });
