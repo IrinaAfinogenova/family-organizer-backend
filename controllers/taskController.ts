@@ -50,3 +50,24 @@ export const getTasks = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const updateTask = async (req: AuthRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body
+
+    const task = await prisma.tasks.update({
+      where: { id },
+      data: updates,
+    });
+
+    res.json(task);
+  } catch (err) {
+    const error = err as {code: string; message: string};
+
+    if ( error.code === "P2025") {
+      return res.status(404).json({ error: "Task not found" });
+    }
+    res.status(500).json({ error: error.message });
+  }
+};
