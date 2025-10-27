@@ -1,6 +1,5 @@
 import { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { parseCookies } from "../utils/parseCookies";
 import { AuthRequest } from "../types";
 
 interface JwtPayload {
@@ -9,7 +8,15 @@ interface JwtPayload {
 }
 
 export function authMiddleware(req: AuthRequest, res: Response, next: NextFunction) {
-  const { token } = parseCookies(req.headers?.cookie)
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ message: "Authorization token missing or malformed. Please log in." });
+  }
+
+  const token = authHeader.split(" ")[1];
   
   if (!token) {
     return res.status(401).json({ message: "User is not logged in. Please authenticate to access this resource." });

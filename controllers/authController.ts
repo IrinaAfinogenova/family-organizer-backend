@@ -57,16 +57,12 @@ export const loginUser = async (req: Request, res: Response) => {
       { expiresIn: "1h" }
     );
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 60 * 60 * 1000, // 1 hour
-    });
-
     const { password: _, ...userWithoutPassword } = user;
 
-    res.json({ user: userWithoutPassword });
+    res.json({
+      token,
+      user: userWithoutPassword
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error", error });
