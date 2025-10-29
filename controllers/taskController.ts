@@ -9,7 +9,7 @@ export const createTask = async (req: AuthRequest, res: Response) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const { title, note, repeat } = req.body;
+    const { title, note, repeat, date } = req.body;
 
     if (!title) {
       return res.status(400).json({ message: "Title is required" });
@@ -20,7 +20,8 @@ export const createTask = async (req: AuthRequest, res: Response) => {
         user_id: userId,
         title,
         note,
-        repeat
+        repeat,
+        date: date ? new Date(date) : new Date(),
       },
     });
 
